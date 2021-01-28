@@ -137,6 +137,8 @@ jobs:
               run: d2 cluster up 2.35.0 --db-version 2.35 --seed
           
             #try end
+            - name: Health check
+              run: timeout 300 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' localhost:8080)" != "200" ]]; do sleep 5; done'
 
             - name: End-to-End tests
               uses: cypress-io/github-action@v2
